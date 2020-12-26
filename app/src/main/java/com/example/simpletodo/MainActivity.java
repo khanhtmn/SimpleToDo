@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     List<String> items;
 
     Button btnAdd;
-    EditText etItem;
+    EditText edItem;
     RecyclerView rvItems;
     ItemsAdapter itemsAdapter;
 
@@ -33,23 +33,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // have each view as a reference in Java
         btnAdd = findViewById(R.id.btnAdd);
-        etItem = findViewById(R.id.etItem);
+        edItem = findViewById(R.id.edItem);
         rvItems = findViewById(R.id.rvItems);
 
-        // each view has its methods
-//        etItem.setText("I'm doing this from Java!");
-
         loadItems();
-//        items.add("Buy milk");
-//        items.add("Go to the gym");
-//        items.add("Have fun!");
 
-        // define an instance
         ItemsAdapter.OnLongClickListener onLongClickListener = new ItemsAdapter.OnLongClickListener() {
             @Override
-            public void onItemLongClicked(int position) {
+            public void OnItemLongClicked(int position) {
                 // Delete the item from the model
                 items.remove(position);
                 // Notify the adapter
@@ -66,13 +58,12 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String todoItem = etItem.getText().toString();
+                String todoItem = edItem.getText().toString();
                 // Add item to the model
                 items.add(todoItem);
-                Log.d("Main activity", items.toString());
-                //Notify adapter that an item is insrted
-                itemsAdapter.notifyItemInserted(items.size() - 1);
-                etItem.setText("");
+                // Notify adapter that an item is inserted
+                itemsAdapter.notifyItemInserted(items.size()-1);
+                edItem.setText("");
                 Toast.makeText(getApplicationContext(), "Item was added", Toast.LENGTH_SHORT).show();
                 saveItems();
             }
@@ -87,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
     private void loadItems() {
         try {
             items = new ArrayList<>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
-        } //to handle exception
-        catch (IOException e) {
-            Log.e("MainActivity", "Error reading item", e);
+        } catch (IOException e) {
+            Log.e("MainActivity", "Error reading items", e);
             items = new ArrayList<>();
         }
     }
@@ -102,4 +92,90 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MainActivity", "Error writing items", e);
         }
     }
+
 }
+
+//public class MainActivity extends AppCompatActivity {
+//
+//    List<String> items;
+//
+//    Button btnAdd;
+//    EditText etItem;
+//    RecyclerView rvItems;
+//    ItemsAdapter itemsAdapter;
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//
+//        // have each view as a reference in Java
+//        btnAdd = findViewById(R.id.btnAdd);
+//        etItem = findViewById(R.id.edItem);
+//        rvItems = findViewById(R.id.rvItems);
+//
+//        // each view has its methods
+////        etItem.setText("I'm doing this from Java!");
+//
+//        loadItems();
+////        items.add("Buy milk");
+////        items.add("Go to the gym");
+////        items.add("Have fun!");
+//
+//        // define an instance
+//        ItemsAdapter.OnLongClickListener onLongClickListener = new ItemsAdapter.OnLongClickListener() {
+//            @Override
+//            public void onItemLongClicked(int position) {
+//                // Delete the item from the model
+//                items.remove(position);
+//                // Notify the adapter
+//                itemsAdapter.notifyItemRemoved(position);
+//                Toast.makeText(getApplicationContext(), "Item was removed", Toast.LENGTH_SHORT).show();
+//                saveItems();
+//            }
+//        };
+//
+//        itemsAdapter = new ItemsAdapter(items, onLongClickListener);
+//        rvItems.setAdapter(itemsAdapter);
+//        rvItems.setLayoutManager(new LinearLayoutManager(this));
+//
+//        btnAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String todoItem = etItem.getText().toString();
+//                // Add item to the model
+//                items.add(todoItem);
+//                Log.d("Main activity", items.toString());
+//                //Notify adapter that an item is insrted
+//                itemsAdapter.notifyItemInserted(items.size() - 1);
+//                etItem.setText("");
+//                Toast.makeText(getApplicationContext(), "Item was added", Toast.LENGTH_SHORT).show();
+//                saveItems();
+//            }
+//        });
+//    }
+//
+//    private File getDataFile() {
+//        return new File(getFilesDir(), "data.txt");
+//    }
+//
+//    // This function will load items by reading every line of the data file
+//    private void loadItems() {
+//        try {
+//            items = new ArrayList<>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
+//        } //to handle exception
+//        catch (IOException e) {
+//            Log.e("MainActivity", "Error reading item", e);
+//            items = new ArrayList<>();
+//        }
+//    }
+//
+//    // This function saves items by writing them into the data file
+//    private void saveItems() {
+//        try {
+//            FileUtils.writeLines(getDataFile(), items);
+//        } catch (IOException e) {
+//            Log.e("MainActivity", "Error writing items", e);
+//        }
+//    }
+//}
